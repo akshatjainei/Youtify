@@ -1,35 +1,36 @@
-const {google} = require('googleapis');
-const crypto = require('crypto');
-const express = require('express');
-const session = require('express-session');
+const { google } = require('googleapis');
+const express = require('express')
+const app = express()
+const PORT = 3100
+const bodyParser = require('body-parser');
+const http = require('http')
 
+app.use(bodyParser.json());
 
-const oauth2Client = new google.auth.OAuth2(
-  YOUR_CLIENT_ID,
-  YOUR_CLIENT_SECRET,
-  YOUR_REDIRECT_URL
-);
+async function getPlaylistItems(playlistId) {
+  const youtube = google.youtube('v3');
 
-// Access scopes for read-only Drive activity.
-const scopes = [
-  'https://www.googleapis.com/auth/drive.metadata.readonly'
-];
+  try {
+    const res = await youtube.playlistItems.list({
+      part: 'snippet,contentDetails',
+      playlistId: playlistId,
+      maxResults: 50, 
+      key: process.env.API_KEY
+    });
+    console.log(res.data.items)
+    return (res.data.items.body); 
 
-// Generate a secure random state value.
-const state = crypto.randomBytes(32).toString('hex');
+  } catch (err) {
+    console.error('Error fetching playlist items:', err);
+  }
+}
 
-// Store state in the session
-req.session.state = state;
+app.get('/' , (req , res)=>{
+  var objAsString = JSON.stringify(getPlaylistItems('PLoJUIP1KAPN1XgwIpciDnsqkrMpz14Z-u'))
+  res.send(objAsString)
+})
 
-// Generate a url that asks permissions for the Drive activity scope
-const authorizationUrl = oauth2Client.generateAuthUrl({
-  // 'online' (default) or 'offline' (gets refresh_token)
-  access_type: 'offline',
-  /** Pass in the scopes array defined above.
-    * Alternatively, if only one scope is needed, you can pass a scope URL as a string */
-  scope: scopes,
-  // Enable incremental authorization. Recommended as a best practice.
-  include_granted_scopes: true,
-  // Include the state parameter to reduce the risk of CSRF attacks.
-  state: state
-});
+const server = http.createServer(app);
+server.listen(PORT)
+
+module.exports = getPlaylistItems

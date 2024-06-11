@@ -15,6 +15,7 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "googleapis": "^140.0.0",
-    "nodemon": "^3.1.2"
+    "nodemon": "^3.1.2",
+    "open": "^10.1.0"
   }
 }
