@@ -1,24 +1,23 @@
 const express = require('express')
 const app = express()
 const http = require('http')
+const crypto = require('crypto')
 const PORT = 3200
 const querystring = require('querystring');
 
-var client_id = process.env.id;
-var redirect_uri = 'http://localhost:3100';
 
-function generateRandomString(length) {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  let counter = 0;
-  while (counter < length) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    counter += 1;
-  }
-  return result;
+const generateRandomString = (length) => {
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const values = crypto.getRandomValues(new Uint8Array(length));
+  return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 }
 
+
+const codeVerifier  = generateRandomString(64);
+
+
+var client_id = '97c64a77d36d4febad6f6ec913457976';
+var redirect_uri = 'http://localhost:3100';
 
 app.get('/login', function(req, res) {
 
@@ -34,6 +33,7 @@ app.get('/login', function(req, res) {
       state: state
     }));
 });
+
 
 const server = http.createServer(app);
 server.listen(PORT)
