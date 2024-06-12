@@ -38,26 +38,41 @@ app.post('/create-playlist', async (req, res) => {
 
   try {
     const me = await spotifyApi.getMe();
-    console.log('User info:', me.body);
-    const userId = me.body.id;
+    // console.log('User info:', me.body);
 
-    const playlist = await spotifyApi.createPlaylist(userId, name, {
-      description: description,
-      public: public
+    const newPlaylist = spotifyApi.createPlaylist(req.body.name, { 'description': req.body.description, 'public': req.body.public})
+    .then(function(data) {
+      console.log('Created playlist!');
+      res.send('Created Playlist')
+    }, function(err) {
+      res.send({msg : err})
+      console.log('Something went wrong!', err);
     });
 
-    console.log('Playlist creation response:', playlist.body);
-    res.json(playlist.body);
-  } catch (err) {
-    console.error('Error creating playlist:', err);
-    if (err.statusCode === 401) {
-      res.status(401).send('Unauthorized. Please check your access token.');
-    } else if (err.body && err.body.error) {
-      res.status(err.body.error.status).send(`Error creating playlist: ${err.body.error.message}`);
-    } else {
-      res.status(400).send('Error creating playlist');
-    }
+    spotifyApi.addTracksToPlaylist('19n6rtpTzOA6VThjcooUrN', ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"],
+      {
+        position : 1
+      })
+      .then(function(data) {
+        console.log('Added tracks to playlist!');
+      }, function(err) {
+        console.log('Something went wrong!', err);
+      });
+    
+    // const tracks = await spotifyApi.searchTracks('Kodaline');
+    // const trackUris = tracks.body.tracks.items.map(track => track.uri);
+
+    // Add tracks to playlist
+    // if (trackUris.length > 0) {
+    //   await spotifyApi.addTracksToPlaylist(newPlaylist.body.id, trackUris);
+    // }
+
+    // res.json({ playlist: newPlaylist.body, addedTracks: trackUris });
   }
+  catch(err){
+    console.log({msg : err})
+  }
+   
 });
 
 const PORT = 8888;

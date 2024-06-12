@@ -16,7 +16,6 @@ const generateRandomString = (length) => {
 const codeVerifier  = generateRandomString(64);
 
 
-var client_id = '97c64a77d36d4febad6f6ec913457976';
 var redirect_uri = 'http://localhost:3100';
 
 app.get('/login', function(req, res) {
