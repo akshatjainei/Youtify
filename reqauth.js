@@ -2,11 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const SpotifyWebApi = require('spotify-web-api-node');
 const searchTrack = require('./search')
+require('dotenv').config()
 
 const app = express();
 app.use(bodyParser.json());
 
 const spotifyApi = new SpotifyWebApi({
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  redirectUri: 'http://localhost:8888/callback'
 });
 
 const scopes = ['playlist-modify-public', 'playlist-modify-private'];

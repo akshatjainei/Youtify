@@ -5,6 +5,7 @@ const PORT = 3100
 const bodyParser = require('body-parser');
 const http = require('http')
 const fs = require('fs');
+require('dotenv').config()
 
 app.use(bodyParser.json());
 
@@ -15,7 +16,7 @@ async function getPlaylistItems(playlistId) {
       part: 'snippet,contentDetails',
       playlistId: playlistId,
       maxResults: 50, 
-      key: 
+      key: process.env.YOUTUBE_KEY
     });
     fs.writeFileSync('playlistItems.json', JSON.stringify(res.data.items));
 

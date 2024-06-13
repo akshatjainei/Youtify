@@ -1,6 +1,10 @@
 const axios = require('axios');
 const querystring = require('querystring');
 const getAccessToken = require('./getAccessToken')
+require('dotenv').config()
+
+const clientId = process.env.CLIENT_ID
+const clientSecret = process.env.CLIENT_SECRET
   
   async function searchTrack(query) {
     const accessToken = await getAccessToken(clientId , clientSecret);
@@ -20,5 +24,9 @@ const getAccessToken = require('./getAccessToken')
     return trackIds
   }
 
-
+  searchTrack('query').then(trackIds => {
+    console.log('Track IDs:', trackIds); 
+    }).catch(error => {
+    console.error('Error:', error.message);
+});
 module.exports = searchTrack
