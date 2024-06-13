@@ -15,7 +15,7 @@ async function getPlaylistItems(playlistId) {
       part: 'snippet,contentDetails',
       playlistId: playlistId,
       maxResults: 50, 
-      key: 'AIzaSyCp_K_QCL5rAomJyBDG80lES1trUs0xsCI'
+      key: 
     });
     fs.writeFileSync('playlistItems.json', JSON.stringify(res.data.items));
 

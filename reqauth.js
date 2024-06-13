@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const SpotifyWebApi = require('spotify-web-api-node');
+const searchTrack = require('./search')
 
 const app = express();
 app.use(bodyParser.json());
@@ -49,25 +50,26 @@ app.post('/create-playlist', async (req, res) => {
       console.log('Something went wrong!', err);
     });
 
-    spotifyApi.addTracksToPlaylist('19n6rtpTzOA6VThjcooUrN', ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"],
+    let trackIdsArray = []
+    searchTrack('Bohemian Rhapsody').then(trackIds => {
+      trackIdsArray = [...trackIds];
+      console.log('Track IDs Array:', trackIdsArray);
+    }).catch(error => {
+      console.error('Error:', error.message);
+    });
+
+    const newString = `spotify:track:${trackIdsArray[0]}`
+    console.log(newString)
+
+    spotifyApi.addTracksToPlaylist('6E7QnIDjijKOSMhtQaDgmE', [`spotify:track:6l8GvAyoUZwWDgF1e4822w`],
       {
-        position : 1
+        position : 0
       })
       .then(function(data) {
         console.log('Added tracks to playlist!');
       }, function(err) {
         console.log('Something went wrong!', err);
       });
-    
-    // const tracks = await spotifyApi.searchTracks('Kodaline');
-    // const trackUris = tracks.body.tracks.items.map(track => track.uri);
-
-    // Add tracks to playlist
-    // if (trackUris.length > 0) {
-    //   await spotifyApi.addTracksToPlaylist(newPlaylist.body.id, trackUris);
-    // }
-
-    // res.json({ playlist: newPlaylist.body, addedTracks: trackUris });
   }
   catch(err){
     console.log({msg : err})
