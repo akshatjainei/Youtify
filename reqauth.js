@@ -16,7 +16,7 @@ app.get('/login', (req, res) => {
   res.redirect(authorizeURL);
 });
 
-app.get('/callback', async (req, res) => {
+app.get('/callback', async (req, res) => { 
   const code = req.query.code || null;
 
   try {
@@ -50,18 +50,8 @@ app.post('/create-playlist', async (req, res) => {
       console.log('Something went wrong!', err);
     });
 
-    let trackIdsArray = []
-    searchTrack('Bohemian Rhapsody').then(trackIds => {
-      trackIdsArray = [...trackIds];
-      console.log('Track IDs Array:', trackIdsArray);
-    }).catch(error => {
-      console.error('Error:', error.message);
-    });
 
-    const newString = `spotify:track:${trackIdsArray[0]}`
-    console.log(newString)
-
-    spotifyApi.addTracksToPlaylist('6E7QnIDjijKOSMhtQaDgmE', [`spotify:track:6l8GvAyoUZwWDgF1e4822w`],
+    spotifyApi.addTracksToPlaylist('6E7QnIDjijKOSMhtQaDgmE', [`spotify:track:6u7T2CKkuYvUFBhNlaEFv4`],
       {
         position : 0
       })
