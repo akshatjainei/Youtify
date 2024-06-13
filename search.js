@@ -23,10 +23,5 @@ const clientSecret = process.env.CLIENT_SECRET
     }
     return trackIds
   }
-
-  searchTrack('query').then(trackIds => {
-    console.log('Track IDs:', trackIds); 
-    }).catch(error => {
-    console.error('Error:', error.message);
-});
+  
 module.exports = searchTrack
