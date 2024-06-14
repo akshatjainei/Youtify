@@ -1,3 +1,4 @@
-/client_secret.json
 /node_modules
-.env
+/src/.env
+/src/client_secret.json
+/src/playlistItems.json
