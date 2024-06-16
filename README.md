@@ -16,6 +16,7 @@ This Node.js project transfers tracks from a YouTube playlist to a newly created
    ```sh
    git clone https://github.com/akshatjainei/Youtify.git
    cd Youtify
+   cd src
    ```
 
 2. Install dependencies:
@@ -33,7 +34,7 @@ This Node.js project transfers tracks from a YouTube playlist to a newly created
 ## Usage
 1.Start the Application
   ```sh
-  node src\app.js
+  node app.js
  ```
 2.Open your browser and navigate to http://localhost:PORT/login to authenticate with Spotify.
 
